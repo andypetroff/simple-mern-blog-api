@@ -1,1 +1,1 @@
-# simple-blog-api
+# simple-mern-blog-api
