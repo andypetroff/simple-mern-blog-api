@@ -26,7 +26,7 @@ export const register = async (req, res) => {
             expiresIn: '30d',
         });
 
-        const { passwordHash, ...userData } = user._doc;
+        const { passwordHash, email, ...userData } = user._doc;
 
         res.json({
             ...userData,
@@ -67,7 +67,7 @@ export const login = async (req, res) => {
             expiresIn: '30d',
         });
 
-        const { passwordHash, ...userData } = user._doc;
+        const { passwordHash, email, ...userData } = user._doc;
 
         res.json({
             ...userData,
@@ -92,7 +92,7 @@ export const getMe = async (req, res) => {
             });
         }
 
-        const { passwordHash, ...userData } = user._doc;
+        const { passwordHash, email, ...userData } = user._doc;
 
         res.json(userData);
 

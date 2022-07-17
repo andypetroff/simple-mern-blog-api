@@ -5,7 +5,7 @@ export const create = async (req, res) => {
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,
-            tags: req.body.tags.split(','),
+            tags: req.body.tags.split(',').map(item => item.trim()),
             imageUrl: req.body.imageUrl,
             user: req.userId,
         });
@@ -16,7 +16,7 @@ export const create = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Failed to create the article',
+            message: 'Failed to create the post',
         });
     }
 };
@@ -29,7 +29,7 @@ export const getAll = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Failed to get all articles',
+            message: 'Failed to get all posts',
         });
     }
 };
@@ -43,7 +43,7 @@ export const getLastTags = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Failed to retrieve tags from recent articles',
+            message: 'Failed to retrieve tags from recent posts',
         });
     }
 };
@@ -65,23 +65,30 @@ export const getOne = async (req, res) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
-                    message: 'Error in getting the article',
+                    message: 'Error in getting the post',
                 });
             }
 
             if (!doc) {
                 return res.status(404).json({
-                    message: 'No article was found'
+                    message: 'No post was found'
                 });
             }
 
-            res.json(doc);
+            const data = doc._doc;
+            //console.log(data);
+            const { ...postData } = data;
+
+            res.json({
+                ...postData
+            });
+            //res.json(doc);
         }
         ).populate('user');
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Failed to get the article',
+            message: 'Failed to get the post',
         });
     }
 };
@@ -97,13 +104,13 @@ export const remove = async (req, res) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
-                    message: 'Unable to delete the article',
+                    message: 'Unable to delete the post',
                 });
             }
 
             if (!doc) {
                 return res.status(404).json({
-                    message: 'No article was found'
+                    message: 'No post was found'
                 });
             }
 
@@ -115,7 +122,7 @@ export const remove = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Failed to delete the article',
+            message: 'Failed to delete the post',
         });
     }
 };
@@ -130,7 +137,7 @@ export const update = async (req, res) => {
         {
             title: req.body.title,
             text: req.body.text,
-            tags: req.body.tags.split(','),
+            tags: req.body.tags.split(',').map(item => item.trim()),
             imageUrl: req.body.imageUrl,
             user: req.userId,
         }
@@ -143,7 +150,7 @@ export const update = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Failed to update the article',
+            message: 'Failed to update the post',
         });
     }
 };

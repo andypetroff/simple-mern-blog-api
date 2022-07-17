@@ -39,13 +39,13 @@ export const registerValidation = [
 export const postCreateValidation = [
     body(
         'title', 
-        'Enter article title'
+        'Enter a post title'
     ).isLength({ 
         min: 3
     }).isString(),
     body(
         'text',
-        'Enter article text'
+        'Enter a post text'
     ).isLength({ 
         min: 5
     }).isString(),
