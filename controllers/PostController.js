@@ -23,9 +23,8 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
     try {
-        const posts = await PostModel.find().populate('user').exec();
+        const posts = await PostModel.find().populate('user', '_id, fullName').exec();
         res.json(posts);
-
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -75,14 +74,35 @@ export const getOne = async (req, res) => {
                 });
             }
 
-            const data = doc._doc;
-            //console.log(data);
-            const { ...postData } = data;
+            const { 
+                _id, 
+                title, 
+                text,
+                tags,
+                imageUrl,
+                viewsCount,
+                createdAt,
+                updatedAt,
+                user: {
+                  _id: user_id, 
+                  fullName: userFullName, 
+                },
+            } = doc._doc;
 
             res.json({
-                ...postData
+                _id,
+                title,
+                text,
+                tags,
+                imageUrl,
+                viewsCount,
+                createdAt,
+                updatedAt,
+                user: {
+                    _id: user_id, 
+                    fullName: userFullName, 
+                },
             });
-            //res.json(doc);
         }
         ).populate('user');
     } catch (err) {
@@ -99,6 +119,9 @@ export const remove = async (req, res) => {
 
         PostModel.findOneAndDelete({
             _id: postsId,
+            user: {
+              _id: req.userId,
+            },
         },
         (err, doc) => {
             if (err) {
@@ -110,7 +133,7 @@ export const remove = async (req, res) => {
 
             if (!doc) {
                 return res.status(404).json({
-                    message: 'No post was found'
+                    message: 'No post was found for current user'
                 });
             }
 
@@ -119,6 +142,7 @@ export const remove = async (req, res) => {
             });
         }
         );
+
     } catch (err) {
         console.log(err);
         res.status(500).json({

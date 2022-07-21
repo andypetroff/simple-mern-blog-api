@@ -26,10 +26,14 @@ export const register = async (req, res) => {
             expiresIn: '30d',
         });
 
-        const { passwordHash, email, ...userData } = user._doc;
+        const {
+            _id,
+            fullName
+        } = user._doc;
 
         res.json({
-            ...userData,
+            _id,
+            fullName, 
             token,
         });
 
@@ -67,10 +71,14 @@ export const login = async (req, res) => {
             expiresIn: '30d',
         });
 
-        const { passwordHash, email, ...userData } = user._doc;
+        const {
+            _id,
+            fullName
+        } = user._doc;
 
         res.json({
-            ...userData,
+            _id,
+            fullName, 
             token,
         });
 
@@ -92,9 +100,23 @@ export const getMe = async (req, res) => {
             });
         }
 
-        const { passwordHash, email, ...userData } = user._doc;
+        const {
+            _id,
+            fullName
+        } = user._doc;
 
-        res.json(userData);
+        res.json({
+            _id,
+            fullName, 
+        });
+
+        // const { 
+        //     passwordHash, 
+        //     email, 
+        //     ...userData 
+        // } = user._doc;
+        // 
+        // res.json(userData);
 
     } catch (err) {
         res.status(500).json({
