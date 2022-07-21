@@ -1,7 +1,7 @@
 {
   "name": "simple-mern-blog-api",
   "version": "1.0.0",
-  "description": "Simple Blog's API with MERN stack (MangoDB, Express, React/Redux, Node)",
+  "description": "Simple Blog's API with MERN stack (MongoDB, Express, React/Redux, Node)",
   "main": "index.js",
   "type": "module",
   "scripts": {
